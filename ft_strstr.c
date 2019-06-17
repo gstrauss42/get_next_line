@@ -6,11 +6,12 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/27 10:09:57 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/13 11:02:27 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/17 14:13:17 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 char	*ft_strstr(const char *haystack, const char *needle)
 {
@@ -38,4 +39,10 @@ char	*ft_strstr(const char *haystack, const char *needle)
 		i++;
 	}
 	return (NULL);
+}
+
+int main()
+{
+	printf("%s", ft_strstr("hello there", "hefoighihfif"));
+	return(0);
 }

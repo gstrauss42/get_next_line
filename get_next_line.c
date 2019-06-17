@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/17 13:11:35 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/17 15:49:16 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int		linecp(t_list **head, char **line)
 {
-	t_list node;
+	t_list *node;
 	int i;
 	int c;
 
 	i = 0;
 	c = 0;
-	node = head;
+	node = *head;
 	while(node)
 	{
 		while(node.content[i] && node.content[i] != '\n')
@@ -40,15 +40,17 @@ int		linecp(t_list **head, char **line)
 int		reader(const int fd)
 {
 	int		i;
+	char	*buff;
 	t_list	**head;
 
 	i = 0;
-	read(fd, buff, buff *sizeof(char));
-	if(!ft_strchr)
-			head = &ft_lstnew(buff, sizeof(char) *ft_strlen(buff));
+	buff = malloc
+	read(fd, buff, buff_size);
+	if(!ft_strchr(buff, '\n'))
+			head = &ft_lstnew(buff, buff_size);
 	while(!ft_strchr(buff, '\n'))
 	{
-		read(fd, buff, buff*sizeof char);
+		read(fd, buff, buff_size);
 		ft_lstend(head, ft_lstnew(buff, buff * sizeof(char)));
 	}
 	return(linecp(head, line));
