@@ -6,13 +6,31 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/18 14:15:47 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/18 14:36:55 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
 #include <stdio.h>
+
+void	ft_lstend(t_list *head, t_list *new)
+{
+	t_list *counta;
+	t_list *count;
+
+	if(head)
+	{
+		count = head;
+		while (count->next)
+		{
+			counta = count->next;
+			count = counta;
+		}
+		count->next = new;
+		new->next = NULL;
+	}
+}
 
 int		sstrnlen(char *str, char c)
 {
@@ -33,7 +51,7 @@ int		linecp(t_list *head, char **line)
 	i = 0;
 	c = 0;
 	node = head;
-	while(holder[i])
+	while(holder && holder[i] != '\0')
 	{
 		line[0][i] = holder[i];
 		i++;
@@ -50,8 +68,8 @@ int		linecp(t_list *head, char **line)
 			holder = ft_strchr(node->content, '\n') + 1;
 		node = node->next;
 		c = 0;
-		printf("%s", line[0]);
 	}
+	printf("%s\n", line[0]);
 	return(0);
 }
 
