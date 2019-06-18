@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/18 14:36:55 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/18 15:28:25 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		reader(const int fd, char **line)
 	while(ft_strchr(buff, '\n') == NULL)
 	{
 		read(fd, buff, BUFF_SIZE);
-		ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
+		ft_lstend(head, ft_lstnew(buff, ft_strlen(buff) *sizeof(char)));
 		count++;
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + sstrnlen(buff, '\n'));
