@@ -1,40 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   ft_strnlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/27 10:05:26 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/18 13:55:59 by gstrauss         ###   ########.fr       */
+/*   Created: 2019/06/18 13:16:53 by gstrauss          #+#    #+#             */
+/*   Updated: 2019/06/18 13:25:21 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+int		ft_strnlen(char *str, char c)
 {
-	int		i;
-	char	cc;
-	char	*ss;
-	char	*r;
-
-	ss = (char *)s;
+	int i;
 	i = 0;
-	cc = (char)c;
-	while (ss[i] != '\0')
-	{
-		if (ss[i] == cc)
-		{
-			r = &ss[i];
-			return (r);
-		}
+	while(str[i] != '\0' && str[i] != c)
 		i++;
-	}
-	if (cc == '\0')
-	{
-		r = &ss[i];
-		return (r);
-	}
-	return (NULL);
+	return(i);
 }

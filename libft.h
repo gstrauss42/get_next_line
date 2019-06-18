@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 10:39:13 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/18 07:19:42 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/18 14:13:00 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 
 typedef struct	s_list
 {
-	void			*content;
+	char			*content;
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
 
-void			ft_lstend(t_list **head, t_list *new);
+int				ft_strnlen(char *str, char c);
+void			ft_lstend(t_list *head, t_list *new);
 t_list			*ft_lstmap(t_list *lst, t_list *(*f) (t_list *elem));
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 void			ft_lstadd(t_list **alst, t_list *new);
