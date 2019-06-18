@@ -6,12 +6,11 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 12:46:00 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/17 14:35:25 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/18 07:17:55 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static char		*substring(char const *a, char c, int i)
 {
@@ -81,22 +80,4 @@ char			**ft_strsplit(char const *s, char c)
 	}
 	ret[g] = NULL;
 	return (ret);
-}
-
-
-
-int main(int argc, char **argv)
-{
-	char **a;
-	int i;
-	char b;
-
-	b = argv[2][0];
-	i = 0;
-	a = ft_strsplit(argv[1], b);
-	while(a[i])
-	{
-		printf("%s\n", a[i]);
-		i++;
-	}
 }
