@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/18 15:28:25 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/19 09:09:35 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int		linecp(t_list *head, char **line)
 {
 	t_list *node;
 	int i;
+	int p;
 	int c;
 	static char *holder;
 
@@ -58,7 +59,7 @@ int		linecp(t_list *head, char **line)
 	}
 	while(node)
 	{
-		while(node->content[i] && node->content[i] != '\n')
+		while(node->content[c] && node->content[c] != '\n')
 		{
 			line[0][i] = node->content[c];
 			i++;
@@ -67,10 +68,11 @@ int		linecp(t_list *head, char **line)
 		if(node->content[i] == '\n')
 			holder = ft_strchr(node->content, '\n') + 1;
 		node = node->next;
+		p = c;
 		c = 0;
 	}
-	printf("%s\n", line[0]);
-	return(0);
+	printf("%s", line[0]);
+	return(1);
 }
 
 int		reader(const int fd, char **line)
@@ -103,10 +105,15 @@ int		get_next_line(const int fd, char **line)
 int main()
 {
 	size_t i;
-	i = 0;
+	int q;
+	q = 0;
 	int fd;
 	char **line;
 	line = (char **)malloc(1000);
 	fd = open("text.txt", O_RDONLY);
-	printf("%d", get_next_line(fd, line));
+	while(q < 5)
+	{
+		printf("%d\n", get_next_line(fd, line));
+		q++;
+	}
 }
