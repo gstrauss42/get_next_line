@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/19 09:09:35 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/19 14:29:44 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,42 @@ int		linecp(t_list *head, char **line)
 	t_list *node;
 	int i;
 	int p;
+	char * tmp;
 	int c;
+	int q;
 	static char *holder;
 
+	q = 0;
 	i = 0;
 	c = 0;
 	node = head;
-	while(holder && holder[i] != '\0')
+	if(holder)
 	{
-		line[0][i] = holder[i];
-		i++;
+		while(holder[i] != '\0' && holder[i] != '\n')
+		{
+			line[0][i] = holder[i];
+			i++;
+		}
+		if(holder[i + 1])
+		{
+			i++;
+			while(holder[i])
+			{
+				tmp[q] = holder[i];
+				i++;
+				q++;
+			}
+			holder = NULL;
+			q = 0;
+			i = 0;
+			while(tmp[q])
+			{
+				holder[i] = tmp[q];
+				i++;
+				q++;
+			}
+			return(1);
+		}
 	}
 	while(node)
 	{
@@ -75,40 +101,35 @@ int		linecp(t_list *head, char **line)
 	return(1);
 }
 
-int		reader(const int fd, char **line)
+int		get_next_line(const int fd, char **line)
 {
-	int		i;
 	int		count;
 	char	*buff;
 	t_list	*head;
 
-	i = 0;
 	count = 0;
 	buff = (char *)malloc(BUFF_SIZE);
 	read(fd, buff, BUFF_SIZE);
+	if(!buff)
+		return(0);
 	head = ft_lstnew(buff, BUFF_SIZE);
 	while(ft_strchr(buff, '\n') == NULL)
 	{
 		read(fd, buff, BUFF_SIZE);
-		ft_lstend(head, ft_lstnew(buff, ft_strlen(buff) *sizeof(char)));
+		ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
 		count++;
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + sstrnlen(buff, '\n'));
 	return(linecp(head, line));
 }
 
-int		get_next_line(const int fd, char **line)
-{
-	return(reader(fd, line));
-}
-
 int main()
 {
-	size_t i;
 	int q;
-	q = 0;
 	int fd;
 	char **line;
+
+	q = 0;
 	line = (char **)malloc(1000);
 	fd = open("text.txt", O_RDONLY);
 	while(q < 5)

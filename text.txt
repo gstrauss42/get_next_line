@@ -1,5 +1,11 @@
-Hello
-there
-how
-are
-you!!
+idea:
+
+read -> buff
+buff -> linked lists of size buff until a new line character is found in a buff
+check if buff has information if so then copy into line first if there is a newline character with data afterwards then set the 
+old static equal to the rest of the current static and return the correct code
+
+copy out of lists to line until a new line character
+save the rest of the link after the first new line character to a static variable
+return correct code
+
