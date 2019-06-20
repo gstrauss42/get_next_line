@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/20 09:23:48 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/20 13:26:48 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	ft_lstend(t_list *head, t_list *new)
 	}
 }
 
-static char *holder_set(static char *holder, t_list *head)
+/*static char *holder_set(static char *holder, t_list *head)
 {
 	//////////
-}
+}*/
 
 int		sstrnlen(char *str, char c)
 {
@@ -70,7 +70,7 @@ int		linecp(t_list *head, char **line, static char *holder)
 			p++;
 			while(holder[p])
 			{
-				tmp[c] = holder[p]
+				tmp[c] = holder[p];
 				c++;
 				p++;
 			}
@@ -95,7 +95,16 @@ int		linecp(t_list *head, char **line, static char *holder)
 		if(node->content[i] == '\n')
 			holder = ft_strchr(node->content, '\n') + 1;
 		node = node->next;
-		p = c;
+		if(node->content[c] = '\n')
+		{
+			i = 0;
+			ft_bzero(holder, ft_strlen(holder));
+			while(node->content[c])
+			{
+				holder[i] = node->content[c];
+				i++;
+				c++;
+			}
 		c = 0;
 	}
 	printf("%s", line[0]);
