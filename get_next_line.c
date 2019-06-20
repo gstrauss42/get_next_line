@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/19 14:29:44 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/20 09:23:48 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	ft_lstend(t_list *head, t_list *new)
 	}
 }
 
+static char *holder_set(static char *holder, t_list *head)
+{
+	//////////
+}
+
 int		sstrnlen(char *str, char c)
 {
 	int i;
@@ -41,44 +46,40 @@ int		sstrnlen(char *str, char c)
 	return(i);
 }
 
-int		linecp(t_list *head, char **line)
+int		linecp(t_list *head, char **line, static char *holder)
 {
 	t_list *node;
 	int i;
-	int p;
-	char * tmp;
 	int c;
-	int q;
-	static char *holder;
+	int p;
+	char *tmp;
 
-	q = 0;
 	i = 0;
 	c = 0;
 	node = head;
 	if(holder)
 	{
-		while(holder[i] != '\0' && holder[i] != '\n')
+		while(holder[i] && holder[i] != '\n')
 		{
 			line[0][i] = holder[i];
 			i++;
 		}
-		if(holder[i + 1])
+		p = i;
+		if(holder[p + 1])
 		{
-			i++;
-			while(holder[i])
+			p++;
+			while(holder[p])
 			{
-				tmp[q] = holder[i];
-				i++;
-				q++;
+				tmp[c] = holder[p]
+				c++;
+				p++;
 			}
-			holder = NULL;
-			q = 0;
-			i = 0;
-			while(tmp[q])
+			ft_bzero(holder, ft_strlen(holder));
+			c = 0;
+			while(tmp[c])
 			{
-				holder[i] = tmp[q];
-				i++;
-				q++;
+				holder[c] = tmp[c];
+				c++;
 			}
 			return(1);
 		}
@@ -105,22 +106,22 @@ int		get_next_line(const int fd, char **line)
 {
 	int		count;
 	char	*buff;
+	static char *holder;
 	t_list	*head;
 
 	count = 0;
 	buff = (char *)malloc(BUFF_SIZE);
-	read(fd, buff, BUFF_SIZE);
-	if(!buff)
-		return(0);
-	head = ft_lstnew(buff, BUFF_SIZE);
-	while(ft_strchr(buff, '\n') == NULL)
+	while(ft_strchr(buff, '\n') == NULL && !ft_strchr(holder, '\n') + 1)
 	{
 		read(fd, buff, BUFF_SIZE);
-		ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
+		if(count == 0)
+			head = ft_lstnew(buff, BUFF_SIZE);
+		else
+			ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
 		count++;
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + sstrnlen(buff, '\n'));
-	return(linecp(head, line));
+	return(linecp(head, line, holder));
 }
 
 int main()
