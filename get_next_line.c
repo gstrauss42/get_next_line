@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/20 13:26:48 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:01:31 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,100 +14,38 @@
 #include "libft.h"
 #include <stdio.h>
 
-void	ft_lstend(t_list *head, t_list *new)
-{
-	t_list *counta;
-	t_list *count;
-
-	if(head)
-	{
-		count = head;
-		while (count->next)
-		{
-			counta = count->next;
-			count = counta;
-		}
-		count->next = new;
-		new->next = NULL;
-	}
-}
-
-/*static char *holder_set(static char *holder, t_list *head)
-{
-	//////////
-}*/
-
-int		sstrnlen(char *str, char c)
-{
-	int i;
-	i = 0;
-	while(str[i] != '\0' && str[i] != c)
-		i++;
-	return(i);
-}
-
-int		linecp(t_list *head, char **line, static char *holder)
+int		linecp(t_list *head, char **line)
 {
 	t_list *node;
-	int i;
-	int c;
-	int p;
+	static char *holder;
 	char *tmp;
+	int lenholder;
 
-	i = 0;
-	c = 0;
 	node = head;
 	if(holder)
 	{
-		while(holder[i] && holder[i] != '\n')
+		lenholder = ft_strnlen(holder, '\n');
+		ft_strncpy(line[0], holder, ft_strnlen(holder, '\n'));
+		if(ft_strchr(holder, '\n'))
 		{
-			line[0][i] = holder[i];
-			i++;
-		}
-		p = i;
-		if(holder[p + 1])
-		{
-			p++;
-			while(holder[p])
-			{
-				tmp[c] = holder[p];
-				c++;
-				p++;
-			}
+			tmp = ft_strsub(holder, lenholder, (ft_strlen(holder) - lenholder));
 			ft_bzero(holder, ft_strlen(holder));
-			c = 0;
-			while(tmp[c])
-			{
-				holder[c] = tmp[c];
-				c++;
-			}
+			ft_strcpy(holder, tmp);
+			printf("%s", line[0]);
 			return(1);
 		}
 	}
 	while(node)
 	{
-		while(node->content[c] && node->content[c] != '\n')
+	ft_strncpy(line[0], node->content, ft_strnlen(node->content, '\n'));
+		if(ft_strchr(node->content, '\n'))
 		{
-			line[0][i] = node->content[c];
-			i++;
-			c++;
-		}
-		if(node->content[i] == '\n')
-			holder = ft_strchr(node->content, '\n') + 1;
-		node = node->next;
-		if(node->content[c] = '\n')
-		{
-			i = 0;
 			ft_bzero(holder, ft_strlen(holder));
-			while(node->content[c])
-			{
-				holder[i] = node->content[c];
-				i++;
-				c++;
-			}
-		c = 0;
+			holder = ft_strsub(node->content, ft_strnlen(node->content, '\n'), (ft_strlen(node->content) - ft_strnlen(node->content, '\n')));
+		}
+		node = node->next;
 	}
-	printf("%s", line[0]);
+	printf("%s\n", line[0]);
 	return(1);
 }
 
@@ -115,12 +53,11 @@ int		get_next_line(const int fd, char **line)
 {
 	int		count;
 	char	*buff;
-	static char *holder;
 	t_list	*head;
 
 	count = 0;
 	buff = (char *)malloc(BUFF_SIZE);
-	while(ft_strchr(buff, '\n') == NULL && !ft_strchr(holder, '\n') + 1)
+	while(!ft_strchr(buff, '\n'))
 	{
 		read(fd, buff, BUFF_SIZE);
 		if(count == 0)
@@ -129,8 +66,8 @@ int		get_next_line(const int fd, char **line)
 			ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
 		count++;
 	}
-	line[0] = (char *)malloc(count * BUFF_SIZE + sstrnlen(buff, '\n'));
-	return(linecp(head, line, holder));
+	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n'));
+	return(linecp(head, line));
 }
 
 int main()

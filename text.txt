@@ -1,5 +1,4 @@
 idea:
-
 read -> buff
 buff -> linked lists of size buff until a new line character is found in a buff
 check if buff has information if so then copy into line first if there is a newline character with data afterwards then set the 
