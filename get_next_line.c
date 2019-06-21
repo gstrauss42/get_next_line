@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/21 13:51:07 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/21 15:05:35 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,27 @@ int		holdercheck(char *holder, char **line)
 {
 	char *tmp;
 	int lenholder;
-
-	if(holder)
-	{
-		line[0] = (char *)malloc(BUFF_SIZE);
+	if(ft_strchr(holder, '\n'))
+	{		
 		lenholder = ft_strnlen(holder, '\n');
-		ft_strncpy(line[0], holder, ft_strnlen(holder, '\n'));
-		if(ft_strchr(holder, '\n'))
-		{
-			tmp = ft_strsub(holder, lenholder, (ft_strlen(holder) - lenholder));
-			ft_bzero(holder, ft_strlen(holder));
-			ft_strcpy(holder, tmp);
-			printf("%s", line[0]);
-			return(1);
-		}
+		line[0] = (char *)malloc(BUFF_SIZE);
+		tmp = ft_strsub(holder, lenholder, (ft_strlen(holder) - lenholder));
+		ft_bzero(holder, ft_strlen(holder));
+		ft_strcpy(holder, tmp);
+		printf("%s", line[0]);
+		return(1);
 	}
 	return(0);
 }
 
-int		linecp(t_list *head, char **line)
+int		linecp(t_list *head, char **line, char *holder)
 {
 	t_list *node;
 
 	node = head;
+
+	if(holder)
+		ft_strncpy(line[0], holder, ft_strnlen(holder, '\0'));
 	while(node)
 	{
 		ft_strncpy(line[0], node->content, ft_strnlen(node->content, '\n'));
@@ -77,6 +75,8 @@ int		get_next_line(const int fd, char **line)
 	while(!ft_strchr(buff, '\n'))
 	{
 		read(fd, buff, BUFF_SIZE);
+		if(!buff)
+			break;
 		if(count == 0)
 			head = ft_lstnew(buff, BUFF_SIZE);
 		else
@@ -84,7 +84,7 @@ int		get_next_line(const int fd, char **line)
 		count++;
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n'));
-	linecp(head, line);
+	linecp(head, line, holder);
 	holder = holderset(holder, head);
 	return(1);
 }
