@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/21 15:05:35 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/24 08:32:00 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@
 char	*holderset(char *holder, t_list *head)
 {
 	int i;
+	int p;
 
 	while(head->next)
 		head = head->next;
+	p = ft_strlen(head->content);
 	i = ft_strnlen(head->content, '\n');
 	ft_bzero(holder, ft_strlen(holder));
 	if(head->content[ft_strnlen(head->content, '\n') + 1])
-		holder = ft_strsub(head->content, i, (ft_strlen(head->content) - i));
-	return(holder);	
+		holder = ft_strnncpy(holder, head->content, i + 1, p - i);
+	return(holder);
 }
 
 int		holdercheck(char *holder, char **line)
@@ -32,9 +34,9 @@ int		holdercheck(char *holder, char **line)
 	char *tmp;
 	int lenholder;
 	if(ft_strchr(holder, '\n'))
-	{		
-		lenholder = ft_strnlen(holder, '\n');
+	{
 		line[0] = (char *)malloc(BUFF_SIZE);
+		lenholder = ft_strnlen(holder, '\n');
 		tmp = ft_strsub(holder, lenholder, (ft_strlen(holder) - lenholder));
 		ft_bzero(holder, ft_strlen(holder));
 		ft_strcpy(holder, tmp);
@@ -49,12 +51,11 @@ int		linecp(t_list *head, char **line, char *holder)
 	t_list *node;
 
 	node = head;
-
 	if(holder)
-		ft_strncpy(line[0], holder, ft_strnlen(holder, '\0'));
+		ft_strncat(line[0], holder, ft_strnlen(holder, '\0'));
 	while(node)
 	{
-		ft_strncpy(line[0], node->content, ft_strnlen(node->content, '\n'));
+		ft_strncat(line[0], node->content, ft_strnlen(node->content, '\n'));
 		node = node->next;
 	}
 	printf("%s\n", line[0]);
@@ -71,19 +72,17 @@ int		get_next_line(const int fd, char **line)
 	count = 0;
 	if(holdercheck(holder, line) == 1)
 		return(1);
-	buff = (char *)malloc(BUFF_SIZE);
-	while(!ft_strchr(buff, '\n'))
+	buff = (char *)malloc(BUFF_SIZE *sizeof(char *));
+	while(ft_strchr(buff, '\n') == NULL || !buff)
 	{
 		read(fd, buff, BUFF_SIZE);
-		if(!buff)
-			break;
 		if(count == 0)
 			head = ft_lstnew(buff, BUFF_SIZE);
 		else
 			ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
 		count++;
 	}
-	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n'));
+	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n') + 1);
 	linecp(head, line, holder);
 	holder = holderset(holder, head);
 	return(1);
