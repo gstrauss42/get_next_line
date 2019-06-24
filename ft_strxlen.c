@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnncpy.c                                      :+:      :+:    :+:   */
+/*   ft_strxlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 08:23:01 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/24 12:12:41 by gstrauss         ###   ########.fr       */
+/*   Created: 2019/06/24 12:07:03 by gstrauss          #+#    #+#             */
+/*   Updated: 2019/06/24 12:16:05 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_strnncpy(char *dst, char *src, size_t start, size_t len)
+int		ft_strxlen(char *s, char start, char end)
 {
 	int i;
+	int ret;
 
 	i = 0;
-	dst = (char *)malloc(len - start + 1);
-	while (start < len && src[start])
-	{
-		dst[i] = src[start];
+	ret = 0;
+	while(s[i] != start &&s[i])
 		i++;
-		start++;
+	if(s[i] != start)
+		return(0);
+	while(s[i] != end && s[i])
+	{
+		i++;
+		ret++;
 	}
-	dst[i] = '\0';
-	return (dst);
+	return(ret);
 }

@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/24 08:32:00 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/24 12:16:46 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ char	*holderset(char *holder, t_list *head)
 {
 	int i;
 	int p;
+	char *tmp;
 
 	while(head->next)
 		head = head->next;
-	p = ft_strlen(head->content);
+	p = ft_strxlen(head->content, '\n', '\n');
 	i = ft_strnlen(head->content, '\n');
-	ft_bzero(holder, ft_strlen(holder));
-	if(head->content[ft_strnlen(head->content, '\n') + 1])
-		holder = ft_strnncpy(holder, head->content, i + 1, p - i);
-	return(holder);
+	if(head->content[i + 1] && p - i > 0)
+		tmp = ft_strnncpy(holder, head->content, i + 1, p);
+	return(tmp);
 }
 
 int		holdercheck(char *holder, char **line)
