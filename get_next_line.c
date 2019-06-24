@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/24 12:16:46 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/24 14:17:21 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,19 @@ char	*holderset(char *holder, t_list *head)
 {
 	int i;
 	int p;
-	char *tmp;
 
+	p = 0;
 	while(head->next)
 		head = head->next;
-	p = ft_strxlen(head->content, '\n', '\n');
-	i = ft_strnlen(head->content, '\n');
-	if(head->content[i + 1] && p - i > 0)
-		tmp = ft_strnncpy(holder, head->content, i + 1, p);
-	return(tmp);
+	i = ft_strnlen(head->content, '\n') + 1;
+	while(head->content[i] && head->content[i] != '\n')
+	{
+		holder[p] = head->content[i];
+		i++;
+		p++;
+	}
+	holder[p] = '\0';
+	return(holder);
 }
 
 int		holdercheck(char *holder, char **line)
@@ -35,9 +39,9 @@ int		holdercheck(char *holder, char **line)
 	int lenholder;
 	if(ft_strchr(holder, '\n'))
 	{
-		line[0] = (char *)malloc(BUFF_SIZE);
 		lenholder = ft_strnlen(holder, '\n');
-		tmp = ft_strsub(holder, lenholder, (ft_strlen(holder) - lenholder));
+		line[0] = ft_strsub(holder, 0, lenholder);
+		tmp = ft_strsub(holder, lenholder, ft_strlen(holder) - lenholder);
 		ft_bzero(holder, ft_strlen(holder));
 		ft_strcpy(holder, tmp);
 		printf("%s", line[0]);
@@ -52,7 +56,7 @@ int		linecp(t_list *head, char **line, char *holder)
 
 	node = head;
 	if(holder)
-		ft_strncat(line[0], holder, ft_strnlen(holder, '\0'));
+		ft_strncat(line[0], holder, ft_strlen(holder));
 	while(node)
 	{
 		ft_strncat(line[0], node->content, ft_strnlen(node->content, '\n'));
@@ -84,7 +88,13 @@ int		get_next_line(const int fd, char **line)
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n') + 1);
 	linecp(head, line, holder);
-	holder = holderset(holder, head);
+	if(count != 0)
+	{
+		while(head->next)
+			head = head->next;
+		if(ft_strchr(head->content, '\n'))
+			holder = holderset(holder, head);
+	}
 	return(1);
 }
 
