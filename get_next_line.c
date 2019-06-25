@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/24 14:17:21 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/25 09:07:59 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,29 @@
 #include "libft.h"
 #include <stdio.h>
 
-char	*holderset(char *holder, t_list *head)
+char	*holderset(t_list *head)
 {
 	int i;
 	int p;
+	t_list *node;
+	char *holder;
 
+	holder = (char *)malloc(BUFF_SIZE);
+	node = head;
 	p = 0;
-	while(head->next)
-		head = head->next;
-	i = ft_strnlen(head->content, '\n') + 1;
-	while(head->content[i] && head->content[i] != '\n')
+	while(node->next)
+		node = node->next;
+	i = ft_strnlen(node->content, '\n') + 1;
+	if(node->content[i])
 	{
-		holder[p] = head->content[i];
-		i++;
-		p++;
-	}
+		while(node->content[i] && node->content[i] != '\n')
+		{
+			holder[p] = node->content[i];
+			i++;
+			p++;
+		}
 	holder[p] = '\0';
+	}
 	return(holder);
 }
 
@@ -72,28 +79,30 @@ int		get_next_line(const int fd, char **line)
 	char	*buff;
 	static char *holder;
 	t_list	*head;
+	char *tmp;
 	
 	count = 0;
 	if(holdercheck(holder, line) == 1)
 		return(1);
 	buff = (char *)malloc(BUFF_SIZE *sizeof(char *));
-	while(ft_strchr(buff, '\n') == NULL || !buff)
+	while(ft_strchr(buff, '\n') == NULL)
 	{
 		read(fd, buff, BUFF_SIZE);
 		if(count == 0)
 			head = ft_lstnew(buff, BUFF_SIZE);
-		else
+		else if(buff)
 			ft_lstend(head, ft_lstnew(buff, ft_strlen(buff)));
 		count++;
 	}
 	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n') + 1);
 	linecp(head, line, holder);
+	free(holder);
 	if(count != 0)
 	{
 		while(head->next)
 			head = head->next;
 		if(ft_strchr(head->content, '\n'))
-			holder = holderset(holder, head);
+			holder = holderset(head);
 	}
 	return(1);
 }
