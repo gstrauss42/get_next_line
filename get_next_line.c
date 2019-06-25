@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/25 12:12:52 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/25 12:36:29 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char *readwrite(const int fd, char **line, char *buff)
 	line[0] = (char *)malloc(count * BUFF_SIZE + ft_strnlen(buff, '\n'));
 	while(head->next)
 	{
-		ft_strcat(line[0], head->content);
+		line[0] = ft_strjoin(line[0], head->content);
 		head = head->next;
 	}
 	ft_strncat(line[0], head->content, ft_strnlen(head->content, '\n'));
@@ -42,7 +42,7 @@ char *readwrite(const int fd, char **line, char *buff)
 void	holder_cp(char *holder, char **line)
 {
 	int i;
-	
+
 	i = 0;
 	line[0] = (char *)malloc(BUFF_SIZE);
 	while(holder[i] && holder[i] != '\n')
@@ -53,7 +53,7 @@ void	holder_cp(char *holder, char **line)
 			line[0][i] = '\0';
 	}
 }
-	
+
 int		get_next_line(const int fd, char **line)
 {
 	char	*buff;
@@ -63,6 +63,7 @@ int		get_next_line(const int fd, char **line)
 	int p;
 	char *tmp;
 	
+	holder = (char *)malloc(BUFF_SIZE);
 	p = 0;
 	i = 0;
 	buff = (char *)malloc(BUFF_SIZE);
@@ -78,7 +79,7 @@ int		get_next_line(const int fd, char **line)
 	if (holder[i] != '\n')
 	{
 		buff = readwrite(fd, line, buff);
-		ft_bzero(holder, ft_strlen(holder));
+		ft_bzero(holder, BUFF_SIZE);
 		ft_strcat(holder, buff);
 	}
 	free(buff);
