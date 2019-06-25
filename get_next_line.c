@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/25 09:07:59 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/25 09:14:33 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,8 @@ int		get_next_line(const int fd, char **line)
 	if(holdercheck(holder, line) == 1)
 		return(1);
 	buff = (char *)malloc(BUFF_SIZE *sizeof(char *));
-	while(ft_strchr(buff, '\n') == NULL)
+	while(ft_strchr(buff, '\n') == NULL && read(fd, buff, BUFF_SIZE) > 0)
 	{
-		read(fd, buff, BUFF_SIZE);
 		if(count == 0)
 			head = ft_lstnew(buff, BUFF_SIZE);
 		else if(buff)
