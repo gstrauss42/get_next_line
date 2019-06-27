@@ -6,11 +6,12 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/27 10:05:05 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/25 11:39:31 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/26 11:00:37 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 char	*ft_strcat(char *s1, const char *s2)
 {
@@ -23,6 +24,7 @@ char	*ft_strcat(char *s1, const char *s2)
 		i++;
 	while (s2[a] != '\0')
 	{
+		printf("%c", s2[a]);
 		s1[i] = s2[a];
 		i++;
 		a++;
