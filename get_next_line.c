@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/27 13:06:23 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/27 13:59:01 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,34 @@
 char *readwrite(const int fd, char **line, char *buff)
 {
 	int count;
-	t_list *head;
+	t_list **head;
+	t_list *node;
 
 	count = 0;
 	while(read(fd, buff, BUFF_SIZE) > 0)
 	{
 		buff[BUFF_SIZE + 1] = '\0';
 		if(count == 0)
-			head = ft_lstnew(buff, BUFF_SIZE + 1);
+		{
+			node = ft_lstnew(buff, BUFF_SIZE + 1);
+			head = &node;
+		}
 		else
-			ft_lstend(head, ft_lstnew(buff, BUFF_SIZE + 1));
+			ft_lstend(node, ft_lstnew(buff, BUFF_SIZE + 1));
 		count++;
 		if(ft_strchr(buff, '\n'))
 			break;
 	}
 	line[0] = (char *)malloc( count * BUFF_SIZE + ft_strnlen(buff, '\n') + 1);
-	if(head)
+	if(node && buff[0])
 	{
-		while(head->next)
+		while(node->next)
 		{
-			ft_strcat(line[0], head->content);
-			head = head->next;
+			ft_strcat(line[0], node->content);
+			node = node->next;
 		}
-		line[0] = ft_strncat(line[0], head->content, ft_strnlen(head->content, '\n'));
+		line[0] = ft_strncat(line[0], node->content, ft_strnlen(node->content, '\n'));
+		ft_lstdel(head, ft_del);	
 	}
 	return(buff);
 }
@@ -92,6 +97,7 @@ int		get_next_line(const int fd, char **line)
 	if (ft_strchr(holder, '\n') == NULL)
 	{
 		buff = readwrite(fd, line, buff);
+		buff = ft_strcut(buff, '\n');
 		ft_bzero(holder, BUFF_SIZE);
 		ft_strcpy(holder, buff);
 	}
@@ -99,6 +105,18 @@ int		get_next_line(const int fd, char **line)
 	free(buff);
 	return(1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -108,7 +126,7 @@ int main()
 	
 	q = 0;
 	line = (char **)malloc(1000);
-	fd = open("text.txt", O_RDONLY);
+	fd = open("tester.txt", O_RDONLY);
 	while(q < 9)
 	{
 		printf("%d\n\n", get_next_line(fd, line));
