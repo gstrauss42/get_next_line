@@ -5,7 +5,6 @@ if newline in static
 if no new line in static
 	if not at end of file
 		read new input up till new line and copy input into line up until new line
-if no newline in static
 	clear static
 	copy remainder of input into static
 return

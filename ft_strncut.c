@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 11:13:51 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/25 12:14:03 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/27 12:50:08 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ char	*ft_strncut(char *s, char c)
 		i++;
 		p++;
 	}
-	ft_bzero(s, ft_strlen(s));
-	s = tmp;
-	free(tmp);
-	s[p] = '\0';
-	return(s);
+	tmp[p] = '\0';
+	return(tmp);
 }

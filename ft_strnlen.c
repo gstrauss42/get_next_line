@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 13:16:53 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/24 13:54:33 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/27 12:44:28 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		ft_strnlen(char *str, char c)
 {
 	int i;
 	i = 0;
-	while(str[i] && str[i] != c)
+	while(str && str[i] && str[i] != c)
 		i++;
 	return(i);
 }
