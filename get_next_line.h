@@ -6,13 +6,13 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 08:55:11 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/28 10:14:44 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/06/28 10:33:28 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 #define GET_NEXT_LINE_H
-#define BUFF_SIZE 5
+#define BUFF_SIZE 100 
 
 #include <sys/types.h>
 #include <sys/stat.h>
