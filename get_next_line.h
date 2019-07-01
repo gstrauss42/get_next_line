@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 08:55:11 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/28 10:33:28 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/01 11:33:48 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+int		get_next_line(const int fd, char **line);
 
 #endif

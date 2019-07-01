@@ -6,12 +6,12 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/06/28 10:38:04 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/01 11:18:37 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft.h"
+#include "./libft/libft.h"
 #include <stdio.h>
 
 char	*readwrite(const int fd, char **line, char *buff, char *holder)
@@ -37,6 +37,7 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 	}
 	if (node && buff[0])
 	{
+		free(line[0]);
 		line[0] = (char *)malloc(count * BUFF_SIZE +
 				ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
 		ft_strcat(line[0], holder);
@@ -75,6 +76,7 @@ int		get_next_line(const int fd, char **line)
 	int			p;
 	char		*tmp;
 
+	line = (char **)malloc(sizeof(char**));
 	line[0] = (char *)malloc(BUFF_SIZE);
 	tmp = (char *)malloc(BUFF_SIZE);
 	p = 0;
@@ -93,16 +95,20 @@ int		get_next_line(const int fd, char **line)
 		buff = readwrite(fd, line, buff, holder);
 		if (!buff[0])
 		{
-			printf("%s\n", line[0]);
-			ft_bzero(holder, ft_strlen(holder));
+//			printf("%s\n", line[0]);
+			ft_bzero(holder, BUFF_SIZE);
+			free(buff);
 			return (0);
 		}
 		buff = ft_strcut(buff, '\n');
 		ft_bzero(holder, BUFF_SIZE);
 		ft_strcpy(holder, buff);
 	}
-	printf("%s\n", line[0]);
+//	printf("%s\n", line[0]);
 	free(buff);
+	free(line[0]);
+	free(line);
+	free(tmp);
 	return (1);
 }
 /*
@@ -110,16 +116,18 @@ int main()
 {
 	int			q;
 	int	fd;
+	int i;
 	char **line;
 
 	q = 1;
-	line = (char **)malloc(1000);
-	fd = open("tester.txt", O_RDONLY);
-	while (q != 0)
+	i = 0;
+	fd = open("./text_files/tester.txt", O_RDONLY);
+	while (i < 15)
 	{
 		q = get_next_line(fd, line);
 		printf("%d\n", q);
+		i++;
 	}
+	sleep(10);
 	return (0);
-}
-*/
+}*/
