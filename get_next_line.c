@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/01 11:18:37 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/01 12:47:49 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		get_next_line(const int fd, char **line)
 		buff = readwrite(fd, line, buff, holder);
 		if (!buff[0])
 		{
-//			printf("%s\n", line[0]);
+			printf("%s", line[0]);
 			ft_bzero(holder, BUFF_SIZE);
 			free(buff);
 			return (0);
@@ -104,14 +104,14 @@ int		get_next_line(const int fd, char **line)
 		ft_bzero(holder, BUFF_SIZE);
 		ft_strcpy(holder, buff);
 	}
-//	printf("%s\n", line[0]);
+	printf("%s", line[0]);
 	free(buff);
 	free(line[0]);
 	free(line);
 	free(tmp);
 	return (1);
 }
-/*
+
 int main()
 {
 	int			q;
@@ -122,12 +122,12 @@ int main()
 	q = 1;
 	i = 0;
 	fd = open("./text_files/tester.txt", O_RDONLY);
-	while (i < 15)
+	while (q != 0)
 	{
 		q = get_next_line(fd, line);
-		printf("%d\n", q);
+	//	printf("%d\n", q);
 		i++;
 	}
-	sleep(10);
+//	sleep(10);
 	return (0);
-}*/
+}

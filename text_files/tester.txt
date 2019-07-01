@@ -1,9 +1,1 @@
-hello
-there
-	hello there
-	hello
-there
-return
-
-L
-
+hi
