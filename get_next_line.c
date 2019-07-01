@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/01 12:47:49 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/01 13:43:19 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 	}
 	if (node && buff[0])
 	{
-		free(line[0]);
-		line[0] = (char *)malloc(count * BUFF_SIZE +
-				ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
+		if(!line)
+			line[0] = (char *)malloc(count * BUFF_SIZE +
+					ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
 		ft_strcat(line[0], holder);
 		while (node->next)
 		{
@@ -75,7 +75,6 @@ int		get_next_line(const int fd, char **line)
 	int			i;
 	int			p;
 	char		*tmp;
-
 	line = (char **)malloc(sizeof(char**));
 	line[0] = (char *)malloc(BUFF_SIZE);
 	tmp = (char *)malloc(BUFF_SIZE);
@@ -98,17 +97,17 @@ int		get_next_line(const int fd, char **line)
 			printf("%s", line[0]);
 			ft_bzero(holder, BUFF_SIZE);
 			free(buff);
+			free(tmp);
+			free(holder);
 			return (0);
 		}
 		buff = ft_strcut(buff, '\n');
 		ft_bzero(holder, BUFF_SIZE);
 		ft_strcpy(holder, buff);
 	}
-	printf("%s", line[0]);
-	free(buff);
-	free(line[0]);
-	free(line);
 	free(tmp);
+	free(buff);
+	printf("%s", line[0]);
 	return (1);
 }
 
@@ -125,9 +124,9 @@ int main()
 	while (q != 0)
 	{
 		q = get_next_line(fd, line);
-	//	printf("%d\n", q);
+		printf("%d\n", q);
 		i++;
 	}
-//	sleep(10);
+	sleep(10);
 	return (0);
 }
