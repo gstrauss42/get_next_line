@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:35:44 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 14:20:29 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 14:25:25 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		get_next_line(int fd, char **line)
 	free(buff);
 	return (1);
 }
-/*
+
 int main()
 {
 	int q;
@@ -72,4 +72,4 @@ int main()
 	}
 //	sleep(10);
 	return(0);
-}*/
+}
