@@ -1,10 +1,9 @@
-if static
-	copy input into start of line up till newline
-if newline in static
-	clear up till first new line
-if no new line in static
-	if not at end of file
-		read new input up till new line and copy input into line up until new line
-	clear static
-	copy remainder of input into static
-return
+initialise
+if newline in holder
+	copy up till new line into line from holder
+	set holder minus this line
+if no newline in holder
+	read into linked list up to the buff before the last buff
+	copy holder into line
+	copy list onto the end of line
+
