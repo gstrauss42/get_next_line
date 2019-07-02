@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:35:44 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 13:38:40 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 14:20:29 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-int		gnltest(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	int count;
-	char *buff;
-	static char *holder;
-	char *carry_over;
-	int red;
+	int			count;
+	char		*buff;
+	static char	*holder;
+	char		*carry_over;
+	int			red;
 
 	if (!line || read(fd, NULL, 0) == -1)
 		return (-1);
 	buff = (char *)malloc(BUFF_SIZE + 1);
 	count = 0;
 	carry_over = NULL;
-	while((red = read(fd, buff, BUFF_SIZE)) > 0)
+	while ((red = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		count++;
 		buff[red] = '\0';
@@ -41,7 +41,7 @@ int		gnltest(int fd, char **line)
 	holder[ft_strlen(holder) + 1] = '\0';
 	*line = (char *)malloc(ft_strnlen(holder, '\n') + 1);
 	ft_bzero(*line, ft_strlen(*line));
-	(*line)[ft_strnlen(holder, '\n') + 1] = '\0'; 
+	(*line)[ft_strnlen(holder, '\n') + 1] = '\0';
 	ft_strncat(*line, holder, ft_strnlen(holder, '\n'));
 	if (!ft_strcut(holder, '\n'))
 	{
@@ -50,11 +50,9 @@ int		gnltest(int fd, char **line)
 		return (0);
 	}
 	free(buff);
-	if(!holder || !holder[0])
-		return(0);
-	return(1);
+	return (1);
 }
-
+/*
 int main()
 {
 	int q;
@@ -67,10 +65,11 @@ int main()
 	fd = open("./text_files/tester.txt", O_RDONLY);
 	while (q != 0)
 	{
-		q = gnltest(fd, &line);
+		q = get_next_line(fd, &line);
 		printf("%s", line);
 		ft_strdel(&line);
 		printf("%d\n", q);
 	}
+//	sleep(10);
 	return(0);
-}
+}*/
