@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 09:16:50 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 09:59:14 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,13 @@ int		get_next_line(const int fd, char **line)
 {
 	char		*buff;
 	static char	*holder;
-	int			i;
-	int			p;
-	char		*tmp;
 	*line = (char *)malloc(BUFF_SIZE);
-	tmp = (char *)malloc(BUFF_SIZE);
-	p = 0;
-	i = 0;
 	if (!holder)
 		holder = (char *)malloc(BUFF_SIZE);
 	buff = (char *)malloc(BUFF_SIZE + 1);
-	if (holder[i])
+	if (holder[0])
 		*line = holder_cp(holder, *line);
-	while (holder[i] && holder[i] != '\n')
-		i++;
-	if (holder[i] == '\n')
+	if(ft_strchr(holder, '\n'))
 		holder = ft_strcut(holder, '\n');
 	if (ft_strchr(holder, '\n') == NULL)
 	{
@@ -96,7 +88,6 @@ int		get_next_line(const int fd, char **line)
 		{
 			ft_bzero(holder, BUFF_SIZE);
 			free(buff);
-			free(tmp);
 			free(holder);
 			return (0);
 		}
@@ -104,7 +95,6 @@ int		get_next_line(const int fd, char **line)
 		ft_bzero(holder, BUFF_SIZE);
 		ft_strcpy(holder, buff);
 	}
-	free(tmp);
 	free(buff);
 	return (1);
 }
@@ -122,7 +112,7 @@ int main()
 	while (q != 0)
 	{
 		q = get_next_line(fd, &line);
-		printf("%s\n", line);
+		printf("%s", line);
 		printf("%d\n", q);
 		i++;
 	}
