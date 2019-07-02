@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 07:51:25 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 08:14:56 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 {
 	int		count;
 	t_list	**head;
+	char *tmp;
 	t_list	*node;
 
 	count = 0;
@@ -37,9 +38,9 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 	}
 	if (node && buff[0])
 	{
-		if(!line)
-			line[0] = (char *)malloc(count * BUFF_SIZE +
-					ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
+		free(line[0]);
+		line[0] = (char *)malloc(count * BUFF_SIZE +
+				ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
 		ft_strcat(line[0], holder);
 		while (node->next)
 		{
