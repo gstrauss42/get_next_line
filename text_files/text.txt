@@ -1,9 +1,0 @@
-initialise
-if newline in holder
-	copy up till new line into line from holder
-	set holder minus this line
-if no newline in holder
-	read into linked list up to the buff before the last buff
-	copy holder into line
-	copy list onto the end of line
-

@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:35:44 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 14:25:25 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 15:08:57 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,4 @@ int		get_next_line(int fd, char **line)
 	}
 	free(buff);
 	return (1);
-}
-
-int main()
-{
-	int q;
-	int fd;
-	int i;
-	char *line;
-
-	q = 1;
-	i = 0;
-	fd = open("./text_files/tester.txt", O_RDONLY);
-	while (q != 0)
-	{
-		q = get_next_line(fd, &line);
-		printf("%s", line);
-		ft_strdel(&line);
-		printf("%d\n", q);
-	}
-//	sleep(10);
-	return(0);
 }
