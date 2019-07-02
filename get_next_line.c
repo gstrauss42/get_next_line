@@ -6,7 +6,7 @@
 /*   By: gstrauss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 09:41:18 by gstrauss          #+#    #+#             */
-/*   Updated: 2019/07/02 08:14:56 by gstrauss         ###   ########.fr       */
+/*   Updated: 2019/07/02 09:16:50 by gstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 {
 	int		count;
 	t_list	**head;
-	char *tmp;
 	t_list	*node;
 
 	count = 0;
@@ -38,35 +37,35 @@ char	*readwrite(const int fd, char **line, char *buff, char *holder)
 	}
 	if (node && buff[0])
 	{
-		free(line[0]);
-		line[0] = (char *)malloc(count * BUFF_SIZE +
+		free(*line);
+		*line = (char *)malloc(count * BUFF_SIZE +
 				ft_strnlen(buff, '\n') + 1 + ft_strlen(holder));
-		ft_strcat(line[0], holder);
+		ft_strcat(*line, holder);
 		while (node->next)
 		{
-			ft_strcat(line[0], node->content);
+			ft_strcat(*line, node->content);
 			node = node->next;
 		}
-		line[0] = ft_strncat(line[0], node->content
+		*line = ft_strncat(*line, node->content
 				, ft_strnlen(node->content, '\n'));
 		ft_lstdel(head, ft_del);
 	}
 	return (buff);
 }
 
-char	*holder_cp(char *holder, char **line)
+char	*holder_cp(char *holder, char *line)
 {
 	int i;
 
 	i = 0;
 	while (holder[i] && holder[i] != '\n')
 	{
-		line[0][i] = holder[i];
+		line[i] = holder[i];
 		i++;
 		if (holder[i] == '\n')
-			line[0][i] = '\0';
+			line[i] = '\0';
 	}
-	return (line[0]);
+	return (line);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -76,8 +75,7 @@ int		get_next_line(const int fd, char **line)
 	int			i;
 	int			p;
 	char		*tmp;
-	line = (char **)malloc(sizeof(char**));
-	line[0] = (char *)malloc(BUFF_SIZE);
+	*line = (char *)malloc(BUFF_SIZE);
 	tmp = (char *)malloc(BUFF_SIZE);
 	p = 0;
 	i = 0;
@@ -85,7 +83,7 @@ int		get_next_line(const int fd, char **line)
 		holder = (char *)malloc(BUFF_SIZE);
 	buff = (char *)malloc(BUFF_SIZE + 1);
 	if (holder[i])
-		line[0] = holder_cp(holder, line);
+		*line = holder_cp(holder, *line);
 	while (holder[i] && holder[i] != '\n')
 		i++;
 	if (holder[i] == '\n')
@@ -93,9 +91,9 @@ int		get_next_line(const int fd, char **line)
 	if (ft_strchr(holder, '\n') == NULL)
 	{
 		buff = readwrite(fd, line, buff, holder);
+		buff[ft_strlen(buff) + 1] = '\0';
 		if (!buff[0])
 		{
-			printf("%s", line[0]);
 			ft_bzero(holder, BUFF_SIZE);
 			free(buff);
 			free(tmp);
@@ -108,7 +106,6 @@ int		get_next_line(const int fd, char **line)
 	}
 	free(tmp);
 	free(buff);
-	printf("%s", line[0]);
 	return (1);
 }
 
@@ -117,14 +114,15 @@ int main()
 	int			q;
 	int	fd;
 	int i;
-	char **line;
+	char *line;
 
 	q = 1;
 	i = 0;
 	fd = open("./text_files/tester.txt", O_RDONLY);
 	while (q != 0)
 	{
-		q = get_next_line(fd, line);
+		q = get_next_line(fd, &line);
+		printf("%s\n", line);
 		printf("%d\n", q);
 		i++;
 	}

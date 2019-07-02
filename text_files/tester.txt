@@ -1,7 +1,2 @@
-hi
-there
-how
-are
-you
-doing
-today?
+hello there
+
