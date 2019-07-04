@@ -2,32 +2,14 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-int	get_next_line(int fd, char **line)
+int		copy(char *holder, int fd, char *buff, char **line)
 {
-	char *buff;
-	int check;
 	int count;
+	int i;
 	t_list *head;
-	
-	if (!line || read(fd, NULL, 0) == -1)
-		return(-1);
-	*line = (char *)malloc(BUFF_SIZE + 2);
-	if(*line[0])
-		ft_bzero(*line, ft_strlen(*line));
+
 	count = 0;
-	buff = (char *)malloc(BUFF_SIZE + 1);
-	static char  *holder;
-	if(!holder)
-		holder = (char *)malloc(BUFF_SIZE + 1);
-	if(ft_strchr(holder, '\n'))
-	{
-		ft_strncat(*line, holder, ft_strnlen(holder, '\n'));
-		(*line)[ft_strnlen(holder, '\n')] = '\0';
-		ft_strcut(holder, '\n');
-	}
-	if(!ft_strchr(holder, '\n'))
-	{
-		while((check = read(fd, buff, BUFF_SIZE)) && check != 0)
+	while((i = read(fd, buff, BUFF_SIZE)) && i != 0 && !ft_strchr(buff, '\n'))
 		{
 			buff[BUFF_SIZE] = '\0';
 			count++;
@@ -35,24 +17,52 @@ int	get_next_line(int fd, char **line)
 				head = ft_lstnew(buff, BUFF_SIZE + 1);
 			else
 				ft_lstend(head, ft_lstnew(buff, BUFF_SIZE + 1));
-			if(ft_strchr(buff, '\n'))
-				break;
 		}
+		buff[BUFF_SIZE] = '\0';
 		if(holder[0])
-			*line = ft_strjoin(*line, holder);
-		while(head->next)
 		{
-			ft_strcat(*line, head->content);
+			*line = ft_strjoin(*line, holder);
+		}
+		while(head && head->next)
+		{
+			*line = ft_strjoin(*line, head->content);
 			head = head->next;
 		}
-		*line = ft_strjoin(*line, head->content);
+		*line = ft_strjoin(*line, buff);
 		ft_nbzero(*line, ft_strnlen(*line, '\n'), ft_strlen(*line));
 		ft_bzero(holder, ft_strlen(holder));
-		holder = ft_strcut(buff, '\n');
+		ft_strcut(buff, '\n');
+		ft_strcat(holder, buff);
+		return(i);
+}
+
+int	get_next_line(int fd, char **line)
+{
+	char *buff;
+	int check;
+	static char  *holder;
+
+	if (!line || read(fd, NULL, 0) == -1)
+		return(-1);
+	buff = (char *)malloc(BUFF_SIZE + 1);
+	ft_bzero(buff, ft_strlen(buff));
+	if(!holder)
+		holder = (char *)malloc(BUFF_SIZE + 1);
+	if(!*line)
+		*line = (char *)malloc(BUFF_SIZE + 1);
+	ft_bzero(*line, ft_strlen(*line));
+	if(*line)
+		ft_bzero(*line, ft_strlen(*line));
+	if(!ft_strchr(holder, '\n'))
+		if(copy(holder, fd, buff, line) == 0)
+			return(0);
+	if(ft_strchr(holder, '\n'))
+	{
+		ft_strncat(*line, holder, ft_strnlen(holder, '\n'));
+		(*line)[ft_strnlen(holder, '\n')] = '\0';
+		ft_strcut(holder, '\n');
 	}
 	free(buff);
-	if(!holder)
-		return(0);
 	return(1);
 }
 	
@@ -67,6 +77,7 @@ int main()
 	{
 		i  = get_next_line(fd, &line);
 		printf("%s\n", line);
+		printf("%d\n", i);
 	}
 	return(0);
 }
