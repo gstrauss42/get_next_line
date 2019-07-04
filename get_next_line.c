@@ -2,23 +2,33 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+int		save(int fd, char *buff, t_list **head)
+{
+	int i;
+	int count;
+
+	count = 0;
+	*head = ft_lstnew("hello", 6);
+	while((i = read(fd, buff, BUFF_SIZE)) && i != 0 && !ft_strchr((*head)->content, '\n'))
+		{
+			if(i == 0)
+				ft_lstdelone(head, ft_del);
+			buff[i + 1] = '\0';
+			count++;
+			if(count == 1)
+				*head = ft_lstnew(buff, BUFF_SIZE + 1);
+			else
+				ft_lstend(*head, ft_lstnew(buff, BUFF_SIZE + 1));
+		}
+	return(i);
+}
+
 int		copy(char *holder, int fd, char *buff, char **line)
 {
-	int count;
 	int i;
 	t_list *head;
 
-	count = 0;
-	while((i = read(fd, buff, BUFF_SIZE)) && i != 0 && !ft_strchr(buff, '\n'))
-		{
-			buff[BUFF_SIZE] = '\0';
-			count++;
-			if(count == 1)
-				head = ft_lstnew(buff, BUFF_SIZE + 1);
-			else
-				ft_lstend(head, ft_lstnew(buff, BUFF_SIZE + 1));
-		}
-		buff[BUFF_SIZE] = '\0';
+	i = save(fd, buff, &head);
 		if(holder[0])
 		{
 			*line = ft_strjoin(*line, holder);
