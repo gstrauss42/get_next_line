@@ -8,41 +8,48 @@ int		save(int fd, char *buff, t_list **head)
 	int count;
 
 	count = 0;
-	*head = ft_lstnew("hello", 6);
-	while((i = read(fd, buff, BUFF_SIZE)) && i != 0 && !ft_strchr((*head)->content, '\n'))
+	while((i = read(fd, buff, BUFF_SIZE)) && i != 0)
 		{
-			if(i == 0)
-				ft_lstdelone(head, ft_del);
 			buff[i + 1] = '\0';
 			count++;
 			if(count == 1)
 				*head = ft_lstnew(buff, BUFF_SIZE + 1);
 			else
 				ft_lstend(*head, ft_lstnew(buff, BUFF_SIZE + 1));
+			if(ft_strchr(buff, '\n'))
+				break ;
 		}
 	return(i);
 }
 
-int		copy(char *holder, int fd, char *buff, char **line)
+int		copy(char **holder, int fd, char *buff, char **line)
 {
 	int i;
 	t_list *head;
 
 	i = save(fd, buff, &head);
-		if(holder[0])
+		if((*holder)[0])
 		{
-			*line = ft_strjoin(*line, holder);
+			*line = ft_strjoin(*line, *holder);
 		}
-		while(head && head->next)
+		if(head)
 		{
+			while(head && !ft_strchr(head->content, '\n'))
+			{
+				*line = ft_strjoin(*line, head->content);
+				if(head->next)
+					head = head->next;
+				else ;
+					break ;
+			}
 			*line = ft_strjoin(*line, head->content);
-			head = head->next;
 		}
-		*line = ft_strjoin(*line, buff);
 		ft_nbzero(*line, ft_strnlen(*line, '\n'), ft_strlen(*line));
-		ft_bzero(holder, ft_strlen(holder));
-		ft_strcut(buff, '\n');
-		ft_strcat(holder, buff);
+		if(ft_strcut(buff, '\n'))
+		{
+			*holder = ft_strnew(ft_strlen(buff));
+			*holder = buff;
+		}
 		return(i);
 }
 
@@ -64,7 +71,7 @@ int	get_next_line(int fd, char **line)
 	if(*line)
 		ft_bzero(*line, ft_strlen(*line));
 	if(!ft_strchr(holder, '\n'))
-		if(copy(holder, fd, buff, line) == 0)
+		if(copy(&holder, fd, buff, line) == 0)
 			return(0);
 	if(ft_strchr(holder, '\n'))
 	{
@@ -75,7 +82,7 @@ int	get_next_line(int fd, char **line)
 	free(buff);
 	return(1);
 }
-	
+
 int main()
 {
 	int fd;
