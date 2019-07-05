@@ -32,7 +32,7 @@ int		copy(char **holder, int fd, char *buff, char **line)
 		{
 			*line = ft_strjoin(*line, *holder);
 		}
-		if(head)
+		if(head && buff)
 		{
 			while(head && !ft_strchr(head->content, '\n'))
 			{
@@ -42,7 +42,7 @@ int		copy(char **holder, int fd, char *buff, char **line)
 				else ;
 					break ;
 			}
-			*line = ft_strjoin(*line, head->content);
+			*line = ft_strjoin(*line, buff);
 		}
 		ft_nbzero(*line, ft_strnlen(*line, '\n'), ft_strlen(*line));
 		if(ft_strcut(buff, '\n'))
@@ -62,22 +62,22 @@ int	get_next_line(int fd, char **line)
 	if (!line || read(fd, NULL, 0) == -1)
 		return(-1);
 	buff = (char *)malloc(BUFF_SIZE + 1);
-	ft_bzero(buff, ft_strlen(buff));
+	buff[0] = '\0';
 	if(!holder)
 		holder = (char *)malloc(BUFF_SIZE + 1);
 	if(!*line)
 		*line = (char *)malloc(BUFF_SIZE + 1);
-	ft_bzero(*line, ft_strlen(*line));
-	if(*line)
-		ft_bzero(*line, ft_strlen(*line));
+	(*line)[0] = '\0';
 	if(!ft_strchr(holder, '\n'))
+	{
 		if(copy(&holder, fd, buff, line) == 0)
 			return(0);
-	if(ft_strchr(holder, '\n'))
+	}
+	else if(ft_strchr(holder, '\n'))
 	{
 		ft_strncat(*line, holder, ft_strnlen(holder, '\n'));
 		(*line)[ft_strnlen(holder, '\n')] = '\0';
-		ft_strcut(holder, '\n');
+		ft_strcut(holder, ft_strnlen(holder, '\n'));
 	}
 	free(buff);
 	return(1);
