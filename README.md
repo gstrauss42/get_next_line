@@ -1,0 +1,2 @@
+# get_next_line
+A line reading function that takes the adress of a passed char *line and a file descriptor to read from and for each concurrent call in the program to get_next_line it reads the following amount up to buff_size (which is a macro defined in the include) or up to the end of the file and the function returns 1 each time it isnt at the end and 0 once its finished reading from the file descriptor
